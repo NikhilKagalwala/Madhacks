@@ -20,12 +20,8 @@ for course in courses:
             pass
 
 course1 = canvas.get_course(6327379)
-assignment1 = course.get_assignment(35995341)
+assignment1 = course1.get_assignment(35995341)
 documentName = "test.pdf"
-command = "curl https://canvas.wisc.edu/api/v1/courses/{0}/assignments/{1}/submissions/self/files \
-            -F \'name={2}\' \
-            -F \'size={3}\' \
-            -F \'parent_folder_path={4}\' \
-            -H \"Authorization: Bearer {5}\"".format(course.id, assignments[0].id, documentName, os.path.getsize(documentName), "/", API_KEY)
+command = "curl https://canvas.instructure.com/api/v1/courses/{0}/assignments/{1}/submissions/self/files -F 'name={2}' -F 'size={3}' -F 'parent_folder_path={4}' -H \"Authorization: Bearer {5}\"".format(course.id, assignments[0].id, documentName, os.path.getsize(documentName), "/", API_KEY)
 # print(command)
 os.system(command)
