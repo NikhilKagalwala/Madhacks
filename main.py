@@ -120,43 +120,6 @@ def search(service, query):
             # no more files
             break
     return result
-
-
-def list_files(items):
-    """given items returned by Google Drive API, prints them in a tabular way"""
-    if not items:
-        # empty drive
-        print('No files found.')
-    else:
-        rows = []
-        for item in items:
-            # get the File ID
-            id = item["id"]
-            # get the name of file
-            name = item["name"]
-            try:
-                # parent directory ID
-                parents = item["parents"]
-            except:
-                # has no parrents
-                parents = "N/A"
-            try:
-                # get the size in nice bytes format (KB, MB, etc.)
-                size = get_size_format(int(item["size"]))
-            except:
-                # not a file, may be a folder
-                size = "N/A"
-            # get the Google Drive type of file
-            mime_type = item["mimeType"]
-            # get last modified date time
-            modified_time = item["modifiedTime"]
-            # append everything to the list
-            rows.append((id, name, parents, size, mime_type, modified_time))
-        print("Files:")
-        # convert to a human readable table
-        table = tabulate(rows, headers=["ID", "Name", "Parents", "Size", "Type", "Modified Time"])
-        # print the table
-        print(table)
     
 
 
@@ -168,7 +131,12 @@ def showCurrentDirectory():
     # List all files and folders in the current directory
     results = service.files().list(q="'root' in parents and trashed = false", fields="nextPageToken, files(id, name, mimeType)").execute()
     items = results.get('files', [])
-    list_files(items)
+    if not items:
+        print('No files or folders found.')
+    else:
+        print('Files and folders:')
+    for item in items:
+        print('{0} ({1})'.format(item['name'], item['mimeType']))
     
 def createDirectory(name):
     # authenticate account
