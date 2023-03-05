@@ -20,30 +20,32 @@ for course in courses:
         except AttributeError:
             pass
 
-# REQUEST 1 --------------------
+
 course1 = canvas.get_course(6327379)
 assignment1 = course1.get_assignment(35995341)
-documentName = "test.pdf"
+documentName = "YO.pdf"
 content_type = "application/pdf"
+documentId = "1HL8b13b9HKAG7tj95kXzWafZc8BH6BJ0WPv3K_21wjU"
+docurl = f'https://docs.google.com/document/d/{documentId}/export?format=pdf'
+
+# REQUEST 1 -------------------- Get upload url
 url = f'https://canvas.instructure.com/api/v1/courses/{course1.id}/assignments/{assignment1.id}/submissions/{USER_ID}/files'
 headers = {'Authorization': f'Bearer {API_KEY}'}
-data = {'name': f'{documentName}',
-        'size': os.path.getsize(documentName),
-        'content_type': f'{content_type}',
-        'parent_folder_path': '/'}
-response = requests.post(url, headers=headers, data=data)
+data = {'url': f'{docurl}',
+        'name': f'{documentName}',
+        'content_type': f'{content_type}'}
+response = requests.post(url, data=data, headers=headers)
 # print(response.status_code)
 # print(response.text)
 
 
-# REQUEST 2 --------------------
+# REQUEST 2 -------------------- Upload file from Google Drive
 upload_url = response.json()["upload_url"]
 upload_params = response.json()["upload_params"]
 
 # 3. Upload file to Canvas
-with open(documentName, "rb") as f:
-    files = {'file': (documentName, f, f'{content_type}')}
-    response = requests.post(upload_url, data=upload_params, files=files)
+data = {'target_url': f'{docurl}'}
+response = requests.post(upload_url, data=upload_params)
 # print(response.status_code)
 # print(response.text)
 
@@ -58,5 +60,5 @@ response = requests.get(redirect_url, headers=headers)
 # REQUEST 3 -------------------- Submitting the assignment
 url = f'https://canvas.instructure.com/api/v1/courses/{course1.id}/assignments/{assignment1.id}/submissions'
 response = requests.post(url, headers=headers, data={'submission[submission_type]': 'online_upload', 'submission[file_ids][]': f'{response.json()["id"]}'})
-print(response.status_code)
+# print(response.status_code)
 # print(response.text)
