@@ -77,9 +77,7 @@ def createDoc(name):
     'parents': [CurrentDirectoryID],
     'mimeType': 'application/vnd.google-apps.document'
     } 
-    file = service.files().create(body=file_metadata).execute()
-    print(f'File ID: {file.get("id")}')  
-    
+    file = service.files().create(body=file_metadata).execute()    
 
 
 def showCurrentDirectory():
@@ -169,7 +167,64 @@ def setDirectory(name):
         return
     else:
         CurrentDirectoryID = items[0]['id']
+        
+# def updateDoc(name, contents):
+    # service = get_gdrive_service()
+    # global CurrentDirectoryID
+    # # Search for the document by name and parent directory ID
+    # query = "mimeType='application/vnd.google-apps.document' and trashed=false and name='%s' and '%s' in parents" % (name, CurrentDirectoryID)
+
+    # results = service.files().list(q=query, fields="nextPageToken, files(id, name)").execute()
+    # items = results.get('files', [])
+
+    # if not items:
+    #     print('Document not found')
+    #     return
+    # else:
+    #     document_id = items[0]['id']
+    #     print('Document ID: %s' % document_id)
+        
+    #     file_metadata = {'content': contents}
+    #     media = MediaFileUpload(name, resumable=True)
+    #     updated_file = service.files().update(fileId=document_id, body=file_metadata, media_body=media, fields='id').execute()
+    #     print('File contents updated')
+    #     return
+
+def updateDoc(name, content):
+    global CurrentDirectoryID
+    service = get_gdrive_service()
+    query = "mimeType='application/vnd.google-apps.document' and trashed=false and name='%s' and '%s' in parents" % (name, CurrentDirectoryID)
+    results = service.files().list(q=query, fields="nextPageToken, files(id, name)").execute()
+    items = results.get('files', [])
+
+    if not items:
+        print('Document not found')
+        return
+    else:
+        file_id = items[0]['id']
+        print('Document ID: %s' % file_id)
+
+
+    try:
+        # First retrieve the file from the API.
+        file = service.files().get(fileId=file_id).execute()
+
+        # File's new metadata.
+        file['content'] = content
+
+        # File's new content.
+        media_body = MediaFileUpload(
+            name, mimetype=file['mimeType'], resumable=True)
+
+        # Send the request to the API.
+        updated_file = service.files().update(
+            fileId=file_id,
+            body=file,
+            media_body=media_body).execute()
+        print("Successfully Update!")
+    except HttpError as error:
+        print(f'An error occurred: {error}')
 
 if __name__ == '__main__':
-    setDirectory("DNE")
+    updateDoc("blah", "I changed the contents...")
     showCurrentDirectory()
