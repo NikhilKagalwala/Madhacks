@@ -3,17 +3,19 @@ import "./App.css"
 // import { BrowserRouter, Routes, Route } from "react-router-dom"
 import PageOne from "./PageOne"
 import PageTwo from "./PageTwo"
+import PageThree from "./PageThree"
+
 import React, { useState } from "react";
 
 
 
 function App() {
   const [page, setPage] = useState(1)
-  console.log(page)
   return (
     <div className="App">
       {page === 1 && <PageOne func={setPage} />}
-      {page === 2 && <PageTwo />}
+      {page === 2 && <PageTwo func={setPage} />}
+      {page === 3 && <PageThree func={setPage} />}
     </div>
   )
 }

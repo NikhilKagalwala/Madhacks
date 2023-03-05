@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 
 function PageOne(props) {
-  const [authMode, setAuthMode] = useState("signin")
+  const [loginMode, setLoginMode] = useState("signin")
   
   function showPageTwo() {
     props.func(2)
   }
 
-  const changeAuthMode = () => {
-    setAuthMode(authMode === "signin" ? "signup" : "signin")
+  const changeLoginMode = () => {
+    setLoginMode(loginMode === "signin" ? "signup" : "signin")
   }
 
-  if (authMode === "signin") {
+  if (loginMode === "signin") {
     return (
-      <div className="Auth-form-container">
-        <form className="Auth-form">
-          <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
+      <div className="Login-form-container">
+        <form className="Login-form">
+          <div className="Login-form-content">
+            <h3 className="Login-form-title">Sign In</h3>
             <div className="text-center">
               Not registered yet?{" "}
-              <span className="link-primary" onClick={changeAuthMode}>
+              <span className="link-primary" onClick={changeLoginMode}>
                 Sign Up
               </span>
             </div>
@@ -51,13 +51,13 @@ function PageOne(props) {
   }
 
   return (
-    <div className="Auth-form-container">
-      <form className="Auth-form">
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign Up</h3>
+    <div className="Login-form-container">
+      <form className="Login-form">
+        <div className="Login-form-content">
+          <h3 className="Login-form-title">Sign Up</h3>
           <div className="text-center">
             Already registered?{" "}
-            <span className="link-primary" onClick={changeAuthMode}>
+            <span className="link-primary" onClick={changeLoginMode}>
               Sign In
             </span>
           </div>
@@ -77,6 +77,14 @@ function PageOne(props) {
               placeholder="Email Address"
             />
           </div>
+          <div className="form-group mt-3">
+              <label>Phone number</label>
+              <input
+                type="phone number"
+                className="form-control mt-1"
+                placeholder="xxx-xxx-xxx"
+              />
+            </div>
           <div className="form-group mt-3">
             <label>Password</label>
             <input

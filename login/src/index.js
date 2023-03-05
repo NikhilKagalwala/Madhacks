@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import PageOne from './PageOne';
-import PageTwo from './PageTwo';
 import reportWebVitals from './reportWebVitals';
 // import { Outlet } from 'react-router-dom';
 
