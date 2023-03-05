@@ -77,9 +77,11 @@ label {
   width: 100vw;
   height: 100vh;
   padding: 2px;
+  font-family: "Open Sans Light";
 }
 
 .ToDoTitle {
+  text-align: center;
   position: fixed;
   top: 0vw;
   left: 0vh;
@@ -87,11 +89,13 @@ label {
   height: 10vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #5EA9BE;
+  background-color: #6d6e80;
+  color: white;
   padding: 2px;
-}
+  font-size: xx-large;
+  }
 
-.ToDo {
+.ToDoContent {
   position: fixed;
   top: 5vw;
   left: 0vh;
@@ -99,8 +103,9 @@ label {
   height: 90vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #5EA9BE;
+  background-color: #C8c8c8;
   padding: 2px;
+  font-size: x-large;
 }
 
 .RelDocsTitle {
@@ -111,8 +116,11 @@ label {
   height: 10vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #CBE1EF;
-  padding: 2px;
+  background-color: #6d6e80;
+  color: white;
+  padding: 2px;  
+  text-align: center;
+  font-size: xx-large;
 }
 
 
@@ -124,8 +132,15 @@ label {
   height: 40vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #CBE1EF;
+  background-color: #c8c8c8;
   padding: 2px;
+  font-size: x-large;
+}
+
+.RelDocsContent .photoContainer {
+  display: inline;
+  position: flex;
+  text-align: center;
 }
 
 .DriveTitle {
@@ -136,8 +151,11 @@ label {
   height: 10vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #9ACDE0;
+  background-color:#6d6e80;
+  color: white;
   padding: 2px;
+  text-align: center;
+  font-size: xx-large;
 }
 
 
@@ -149,6 +167,7 @@ label {
   height: 40vh;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
-  background-color: #9ACDE0;
+  background-color: #c8c8c8;
   padding: 2px;
+  font-size: x-large;
 }

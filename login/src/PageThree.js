@@ -1,44 +1,48 @@
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function PageThree(props) { 
+    const assignmentNames = [
+        { name: "ENGL150 Paper 2 4/6/23 11:59pm", link: "https://docs.google.com/document/d/1HiGSOsEM8ymI6875qS7g8zBZXUfp3w90TiGZ1xQAV6c/edit?usp=sharing" },
+    ]
+
+    const courseInfo = [
+        { name: "STAT240 Notes", link: "https://docs.google.com/document/d/1pTH2hhUckw7U7ajqReGeWM9VNzzAnwTPe39btJGPyEM/edit?usp=sharing" },
+        { name: "ENGL150 Notes", link: "https://docs.google.com/document/d/1jSRh--dhrwY3gjkMggl0WPgNTjQgpxdhIXPFFpFP2o4/edit?usp=sharing" },
+        { name: "COMPSCI577 Notes", link: "https://docs.google.com/document/d/1rWR6CDqWznTYnQBQF-4kzU4z7mRFLXUqwyCT8l7ubfg/edit?usp=sharing" },
+    ]
+
+    const driveInfo = [
+        { name: "STAT240", link: "https://drive.google.com/drive/folders/10yIwB7W3za3HNl9rHfN2vJeHvKOeYKgJ" },
+        { name: "ENGL150", link: "https://drive.google.com/drive/folders/1pF6xKx92drMCbdhCcny5ZMAQBeasV5P3" },
+        { name: "COMPSCI577", link: "https://drive.google.com/drive/folders/1c4GQkBqSQSXRrYmSWa8pRBXrJ-YSShgf" },
+    ]
+
     return (
         <div>
-            {/* <div style={{ background: "#fff", float: "right", textAlign: "center", padding: "10px" }}>
-                <FontAwesomeIcon icon={faUser} size="2x" /><br></br>
-                Profile
-            </div> */}
             <div className="container">      
                 <div className="ToDoTitle">
                     <h3>To Do List</h3>
                 </div>
-                <div className="ToDo">
-                        <ul id="Assignments"> 
-                                {["Math 12/3", "CS 12/5", "Anthro 12/3", "CS 12/6"].map(item => (
-                                    <li key={item}><a href="https://google.com">{item}</a></li>
-                                ))}
-                            </ul>
+                <div className="ToDoContent">
+                        <ul id="AssignmentsInfo"> 
+                        {assignmentNames.map(link => ( <li key={link.name}><a href={link.link}>{link.name}</a></li>))}
+                        </ul>
                     </div>
                 <div className="RelDocsTitle">
                     <h3>Related Documents</h3>
-                </div>
+                </div> 
                 <div className="RelDocsContent">
-                        <ul id="RelDocsList"> 
-                            {["Doc1", "Doc2", "Doc3", "Doc4"].map(item => (
-                                <li key={item}><a href="https://google.com">{item}</a></li>
-                            ))}
-                        </ul>                </div>
-
+                    <ul id="RelDocsInfo"> 
+                            {courseInfo.map(link => ( <li key={link.name}><a href={link.link}>{link.name}</a></li>))}
+                        </ul>           
+                    </div>
                 <div className="DriveTitle">
                     <h3>Important Folders</h3>
                 </div>
                 <div className="DriveContent">
                     <div className="DriveFormat">
-                    <ul id="DriveList"> 
-                            {["Folder1", "Folder2", "Folder3", "Folder4"].map(item => (
-                                <li key={item}><a href="https://google.com">{item}</a></li>
-                            ))}
-                        </ul>
+                        <ul id="DriveList"> 
+                                {driveInfo.map(link => ( <li key={link.name}><a href={link.link}>{link.name}</a></li>))}
+                        </ul>           
                     </div>
                 </div>
             </div>

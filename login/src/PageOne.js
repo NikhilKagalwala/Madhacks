@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 function PageOne(props) {
   const [loginMode, setLoginMode] = useState("signin")
-  
   function showPageTwo() {
     props.func(2)
   }
@@ -10,7 +9,6 @@ function PageOne(props) {
   const changeLoginMode = () => {
     setLoginMode(loginMode === "signin" ? "signup" : "signin")
   }
-
   if (loginMode === "signin") {
     return (
       <div className="Login-form-container">
@@ -30,7 +28,14 @@ function PageOne(props) {
                 type="email"
                 className="form-control mt-1"
                 placeholder="Enter email"
-                required
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>User ID</label>
+              <input
+                id="User ID"
+                className="form-control mt-1"
+                placeholder="Enter user ID"
               />
             </div>
             <div className="form-group mt-3">
@@ -85,6 +90,14 @@ function PageOne(props) {
                 type="phone number"
                 className="form-control mt-1"
                 placeholder="xxx-xxx-xxx"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>User ID</label>
+              <input
+                id="User ID"
+                className="form-control mt-1"
+                placeholder="Enter User ID"
               />
             </div>
           <div className="form-group mt-3">
