@@ -223,6 +223,11 @@ def updateDoc(name):
     # Execute the request to insert the newline
     docs_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
 
+def new_assignemnt(course_name, assignment_name):
+    createDoc(course_name)
+    setDirectory(course_name)
+    createDoc(assignment_name)
+    updateDoc(assignment_name)
 
 if __name__ == '__main__':
     # createDirectory("course1")
