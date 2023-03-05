@@ -9,11 +9,8 @@ def textReminder(number,message):
     message = client.messages.create(  
                                 messaging_service_sid='MG9b40d05faa2615d5c00a573a86593f13', 
                                 body=message,      
-                                to='+16086365924' 
+                                to=number 
                             ) 
     
     print(message.sid)
-
-
-for x in range(10):
-    textReminder("MWAHAHAHAHA")
+    
