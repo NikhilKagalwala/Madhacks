@@ -1,8 +1,8 @@
 from __future__ import print_function
+import datetime
 import pickle
 import os.path
 import io
-from datetime import date
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -10,29 +10,15 @@ from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 
 CurrentDirectoryID = None
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata',
           'https://www.googleapis.com/auth/drive',
-          'https://www.googleapis.com/auth/drive.file']
-
-def append_date_to_google_doc(doc_id):
-    creds = Credentials.from_authorized_user_file('credentials.json', ['https://www.googleapis.com/auth/documents'])
-    service = build('docs', 'v1', credentials=creds)
-    document = service.documents().get(documentId=doc_id).execute()
-    title = document['title']
-    requests = [
-        {
-            'insertText': {
-                'text': str(date.today()),
-                'endOfSegmentLocation': {}
-            }
-        }
-    ]
-    service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
-    print(f"Current date '{str(date.today())}' appended to '{title}'")
+          'https://www.googleapis.com/auth/drive.file',
+          'https://www.googleapis.com/auth/documents']
 
 def get_gdrive_service():
     creds = None
@@ -56,6 +42,33 @@ def get_gdrive_service():
             pickle.dump(creds, token)
     # return Google Drive API service
     service = build('drive', 'v3', credentials=creds)
+    if CurrentDirectoryID is None:
+        root_folder = service.files().get(fileId='root', fields='id').execute()
+        CurrentDirectoryID = root_folder['id']
+    return service
+
+def get_gdocs_service():
+    creds = None
+    global CurrentDirectoryID
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+    # return Google Drive API service
+    service = build('docs', 'v1', credentials=creds)
     if CurrentDirectoryID is None:
         root_folder = service.files().get(fileId='root', fields='id').execute()
         CurrentDirectoryID = root_folder['id']
@@ -134,7 +147,7 @@ def query(FILE_NAME):
     if ".txt" in FILE_NAME:
         query = "name='{}' and mimeType='text/plain' and trashed = false and parents='{}'".format(FILE_NAME, CurrentDirectoryID)
     else:
-        query = "name='{}' and mimeType='application/vnd.google-apps.document' and trashed = false and parents='{}'".format("YO", CurrentDirectoryID)
+        query = "name='{}' and mimeType='application/vnd.google-apps.document' and trashed = false and parents='{}'".format(FILE_NAME, CurrentDirectoryID)
      
     response = service.files().list(q=query, fields='nextPageToken, files(id, name)').execute()
 
@@ -182,7 +195,33 @@ def setDirectory(name):
         return CurrentDirectoryID
 
 
+def updateDoc(name):
+    file_id = query(name)
+    global CurrentDirectoryID
+    # Get the ID of the Google Doc to update
+    doc_id = file_id
 
+    # Create a connection to the Docs API
+    docs_service = get_gdocs_service()
+
+
+    # Create the request to insert the newline
+    dt = datetime.datetime.now()
+    date_part = dt.date()
+    formatted_date = date_part.strftime('%d-%m-%Y')
+    requests = [
+        {
+            'insertText': {
+                'location': {
+                    'index': 1
+                },
+                'text': f"{formatted_date}\n"
+            }
+        }
+    ]
+
+    # Execute the request to insert the newline
+    docs_service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
 
 
 if __name__ == '__main__':
@@ -192,5 +231,5 @@ if __name__ == '__main__':
     # showCurrentDirectory()
     # append_date_to_google_doc(query("Assignment1"))
     # export_pdf("Assignment1")
-    updateDoc("Assignment1")
+    updateDoc("blah")
     
