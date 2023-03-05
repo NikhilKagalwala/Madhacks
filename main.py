@@ -183,11 +183,14 @@ def setDirectory(name):
 
 
 
+
+
 if __name__ == '__main__':
-    createDirectory("course1")
-    setDirectory("course1")
-    createDoc("Assignment1")
-    showCurrentDirectory()
-    append_date_to_google_doc(query("Assignment1"))
-    export_pdf("Assignment1")
+    # createDirectory("course1")
+    # setDirectory("course1")
+    # createDoc("Assignment1")
+    # showCurrentDirectory()
+    # append_date_to_google_doc(query("Assignment1"))
+    # export_pdf("Assignment1")
+    updateDoc("Assignment1")
     
