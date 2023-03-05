@@ -31,9 +31,11 @@ function PageThree(props) {
                     <h3>Related Documents</h3>
                 </div> 
                 <div className="RelDocsContent">
-                    <ul id="RelDocsInfo"> 
-                            {courseInfo.map(link => ( <li key={link.name}><a href={link.link}>{link.name}</a></li>))}
-                        </ul>           
+                    <div className="photoContainer">
+                        <ul id="RelDocsInfo"> 
+                                {courseInfo.map(link => ( <li key={link.name}><a href={link.link}> <br></br>{link.name}</a></li>))}
+                            </ul>           
+                        </div>
                     </div>
                 <div className="DriveTitle">
                     <h3>Important Folders</h3>
