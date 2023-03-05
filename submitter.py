@@ -3,6 +3,7 @@ from canvasapi import Canvas
 import requests
 import os
 import pymysql
+import mysql.connector
 
 API_URL = "https://canvas.instructure.com/"
 API_KEY = "7~ZLz5HcFc2G5nJT5GCswngqzHx3gixHL0tjCQoD4CNlLQIDIQH3mXa6lIkdAeuhXU"
@@ -89,28 +90,96 @@ def local_submit(course, assignment, docname):
         print("Success")
 
 def connect_database():
-    # Set the Cloud SQL connection parameters
+    # Define the credentials
     connection_name = "timely-initial:us-central1:studocs-db-test"
     db_user = "root"
-    db_password = ""
-    db_name = "studocs-db-test"
+    db_password = "ONTIME123"
+    db_name = "main_db"
+    db_ip = "35.226.41.35"
 
-    # Establish a connection to the database
-    connection = pymysql.connect(
-        unix_socket=f"/cloudsql/{connection_name}",
-        user=db_user,
-        password=db_password,
-        db=db_name,
-        cursorclass=pymysql.cursors.DictCursor
-    )
-    with connection.cursor() as cursor:
-        # Execute a SQL query
-        sql = "SELECT * FROM mytable"
-        cursor.execute(sql)
-    # Fetch the results
+    # Set up the connection to the database
+    conn = pymysql.connect(host=db_ip, user=db_user, password=db_password, db=db_name, unix_socket=f"/cloudsql/{connection_name}")
+
+    # Open a cursor to perform database operations
+    cursor = conn.cursor()
+
+    # Execute a sample SQL query
+    cursor.execute("SELECT * FROM my_table")
+
+    # Fetch and print the query results
     results = cursor.fetchall()
     for row in results:
         print(row)
+    
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+
+def connect_database2():
+    my_connect = mysql.connector.connect(
+    host="35.226.41.35",
+    user="root",
+    passwd="ONTIME123",
+    database="main_db"
+    )
+    ####### end of connection details ####
+    my_cursor = my_connect.cursor()
+
+    my_cursor.execute("SELECT * FROM courses")
+    my_result = my_cursor.fetchone()
+    while my_result is not None:
+        print(my_result)
+        my_result = my_cursor.fetchone()
+
+    # sql = "INSERT INTO user_info (password_hash, name, email, canvas_api_key, canvas_user_id, canvas_website, google_api_key, phone_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    # val = ("password123", "John Doe", "ontimemadhacks@gmail.com", API_KEY, USER_ID, API_URL, "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", "1234567890")
+    # my_cursor.execute(sql, val)
+
+    query = f"INSERT INTO courses (user_id, course_id, course_name, notes_link, drive_link) VALUES (%s, %s, %s, %s, %s)"
+    values = (1, 'CS101', 'Intro to Computer Science', 'https://notes.com/cs101', 'https://drive.com/cs101')
+    my_cursor.execute(query, values)
+
+    my_connect.commit()
+
+    print(my_cursor.rowcount, "record inserted.")
+
+def insert_assignments(assignment_id, course_id, assignment_name, due_date, assignment_link, google_docs_id):
+    my_connect = mysql.connector.connect(
+    host="35.226.41.35",
+    user="root",
+    passwd="ONTIME123",
+    database="main_db"
+    )
+    ####### end of connection details ####
+    my_cursor = my_connect.cursor()
+    user_id = get_user(USER_ID)
+    query = f"INSERT INTO courses ({user_id}, {assignment_id}, {due_date}, {google_docs_id}, {course_id}, {assignment_name}, {assignment_link}) VALUES (%s, %s, %s, %s, %s)"
+    values = (1, 'CS101', 'Intro to Computer Science', 'https://notes.com/cs101', 'https://drive.com/cs101')
+    my_cursor.execute(query, values)
+
+    my_connect.commit()
+
+    print(my_cursor.rowcount, "record inserted.")
+
+def 
+    
+
+def insert_courses():
+    my_connect = mysql.connector.connect(
+    host="35.226.41.35",
+    user="root",
+    passwd="ONTIME123",
+    database="main_db"
+    )
+    ####### end of connection details ####
+    my_cursor = my_connect.cursor()
+    query = f"INSERT INTO courses (user_id, course_id, course_name, notes_link, drive_link) VALUES (%s, %s, %s, %s, %s)"
+    values = (1, 'CS101', 'Intro to Computer Science', 'https://notes.com/cs101', 'https://drive.com/cs101')
+    my_cursor.execute(query, values)
+
+    my_connect.commit()
+
+    print(my_cursor.rowcount, "record inserted.")
 
 if __name__ == "__main__":
     # gh.createDirectory("course1")
@@ -119,7 +188,7 @@ if __name__ == "__main__":
     # gh.showCurrentDirectory()
     # gh.updateDoc("Assignment1")
     # gh.export_pdf("Assignment1")
-    google_submit(course1, assignment1, gh.query("Assignment1"), "Assignment1.pdf")
+    # google_submit(course1, assignment1, gh.query("Assignment1"), "Assignment1.pdf")
     # local_submit(course1, assignment1, localDocumentName)
-    # connect_database()
+    connect_database2()
     print("Done")
