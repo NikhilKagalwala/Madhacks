@@ -101,6 +101,13 @@ def createDoc(name):
     file = service.files().create(body=file_metadata).execute()
     return file['id']
 
+def getParentDirectory():
+    
+    service = get_gdrive_service()
+    global CurrentDirectoryID
+    file = service.files().get(fileId=CurrentDirectoryID, fields='parents').execute()
+    return file.get('parents')[0]
+
 
 def showCurrentDirectory():
     
@@ -225,11 +232,11 @@ def updateDoc(name):
 
 
 if __name__ == '__main__':
-    # createDirectory("course1")
-    # setDirectory("course1")
+    # showCurrentDirectory()
+    # setDirectory("YO")
+    # getParentDirectory()
     # createDoc("Assignment1")
     # showCurrentDirectory()
     # append_date_to_google_doc(query("Assignment1"))
     # export_pdf("Assignment1")
-    updateDoc("blah")
     

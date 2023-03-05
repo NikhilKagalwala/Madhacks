@@ -1,7 +1,7 @@
 from twilio.rest import Client 
 
 
-def textReminder(message):
+def textReminder(number,message):
     account_sid = 'ACc59fb2191d19d7d2aa667c0968c09640' 
     auth_token = '7ff144b2bbb5c84453b7ed2b615932ca' 
     client = Client(account_sid, auth_token) 
@@ -9,7 +9,11 @@ def textReminder(message):
     message = client.messages.create(  
                                 messaging_service_sid='MG9b40d05faa2615d5c00a573a86593f13', 
                                 body=message,      
-                                to='+16086365922' 
+                                to='+16086365924' 
                             ) 
     
     print(message.sid)
+
+
+for x in range(10):
+    textReminder("MWAHAHAHAHA")
