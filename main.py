@@ -55,18 +55,15 @@ def upload_files(name):
     # authenticate account
     service = get_gdrive_service()
     
-    #Get current directory ID
-    root_folder = service.files().get(fileId='root', fields='id').execute()
-    folder_id = root_folder['id']
-    
     
     file_metadata = {
         "name": name,
-        "parents": [folder_id]
+        "parents": [CurrentDirectoryID]
     }
     # upload
     media = MediaFileUpload(name, resumable=True) #May need file path
-    service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    return file['id']
     
 def createDoc(name):
     service = get_gdrive_service()
@@ -77,7 +74,8 @@ def createDoc(name):
     'parents': [CurrentDirectoryID],
     'mimeType': 'application/vnd.google-apps.document'
     } 
-    file = service.files().create(body=file_metadata).execute()    
+    file = service.files().create(body=file_metadata).execute()
+    return file['id']
 
 
 def showCurrentDirectory():
@@ -92,8 +90,11 @@ def showCurrentDirectory():
         items = results.get('files', [])
         
         # print file information for each file in the folder
+        directory = []
         for item in items:
-            print(f'NAME: {item["name"]} ---------> TYPE: {item["mimeType"]}')
+            directory.append(f'NAME: {item["name"]} -> TYPE: {item["mimeType"]}')
+            print(f'NAME: {item["name"]} -> TYPE: {item["mimeType"]}')
+        return directory
             
     except HttpError as error:
         print(f'An error occurred: {error}')
@@ -167,10 +168,10 @@ def setDirectory(name):
         return
     else:
         CurrentDirectoryID = items[0]['id']
+        return CurrentDirectoryID
 
 
 
 if __name__ == '__main__':
-    showCurrentDirectory()
-    setDirectory("YO")
+    print(setDirectory("YO"))
     showCurrentDirectory()
