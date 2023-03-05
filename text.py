@@ -1,6 +1,5 @@
 from twilio.rest import Client 
 
-
 def textReminder(number,message):
     account_sid = 'ACc59fb2191d19d7d2aa667c0968c09640' 
     auth_token = '7ff144b2bbb5c84453b7ed2b615932ca' 
