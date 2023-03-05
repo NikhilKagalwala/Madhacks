@@ -2,7 +2,7 @@ from __future__ import print_function
 import pickle
 import os.path
 import io
-# from tabulate import tabulate
+from datetime import date
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -11,10 +11,6 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 from google.oauth2.credentials import Credentials
 
-from apiclient import errors
-import requests
-from tqdm import tqdm
-
 CurrentDirectoryID = None
 
 # If modifying these scopes, delete the file token.pickle.
@@ -22,6 +18,21 @@ SCOPES = ['https://www.googleapis.com/auth/drive.metadata',
           'https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/drive.file']
 
+def append_date_to_google_doc(doc_id):
+    creds = Credentials.from_authorized_user_file('credentials.json', ['https://www.googleapis.com/auth/documents'])
+    service = build('docs', 'v1', credentials=creds)
+    document = service.documents().get(documentId=doc_id).execute()
+    title = document['title']
+    requests = [
+        {
+            'insertText': {
+                'text': str(date.today()),
+                'endOfSegmentLocation': {}
+            }
+        }
+    ]
+    service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+    print(f"Current date '{str(date.today())}' appended to '{title}'")
 
 def get_gdrive_service():
     creds = None
@@ -173,5 +184,10 @@ def setDirectory(name):
 
 
 if __name__ == '__main__':
-    print(setDirectory("YO"))
+    createDirectory("course1")
+    setDirectory("course1")
+    createDoc("Assignment1")
     showCurrentDirectory()
+    append_date_to_google_doc(query("Assignment1"))
+    export_pdf("Assignment1")
+    
