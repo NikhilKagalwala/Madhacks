@@ -26,9 +26,11 @@ function PageOne(props) {
             <div className="form-group mt-3">
               <label>Email address</label>
               <input
+                id="email"
                 type="email"
                 className="form-control mt-1"
                 placeholder="Enter email"
+                required
               />
             </div>
             <div className="form-group mt-3">

@@ -70,3 +70,85 @@ label {
   font-weight: 800;
 }
 
+.container {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 2px;
+}
+
+.ToDoTitle {
+  position: fixed;
+  top: 0vw;
+  left: 0vh;
+  width: 25vw;
+  height: 10vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #5EA9BE;
+  padding: 2px;
+}
+
+.ToDo {
+  position: fixed;
+  top: 5vw;
+  left: 0vh;
+  width: 25vw;
+  height: 90vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #5EA9BE;
+  padding: 2px;
+}
+
+.RelDocsTitle {
+  position: fixed;
+  top: 0vh;
+  left: 25vw;
+  width: 75vw;
+  height: 10vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #CBE1EF;
+  padding: 2px;
+}
+
+
+.RelDocsContent {
+  position: fixed;
+  top: 10vh;
+  left: 25vw;
+  width: 75vw;
+  height: 40vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #CBE1EF;
+  padding: 2px;
+}
+
+.DriveTitle {
+  position: fixed;
+  top: 50vh;
+  left: 25vw;
+  width: 75vw;
+  height: 10vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #9ACDE0;
+  padding: 2px;
+}
+
+
+.DriveContent {
+  position: fixed;
+  top: 60vh;
+  left: 25vw;
+  width: 75vw;
+  height: 40vh;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: #9ACDE0;
+  padding: 2px;
+}
