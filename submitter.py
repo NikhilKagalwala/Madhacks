@@ -1,6 +1,8 @@
+import googleHandler as gh
 from canvasapi import Canvas
 import requests
 import os
+import pymysql
 
 API_URL = "https://canvas.instructure.com/"
 API_KEY = "7~ZLz5HcFc2G5nJT5GCswngqzHx3gixHL0tjCQoD4CNlLQIDIQH3mXa6lIkdAeuhXU"
@@ -86,7 +88,38 @@ def local_submit(course, assignment, docname):
     if response.status_code == 201:
         print("Success")
 
+def connect_database():
+    # Set the Cloud SQL connection parameters
+    connection_name = "timely-initial:us-central1:studocs-db-test"
+    db_user = "root"
+    db_password = ""
+    db_name = "studocs-db-test"
+
+    # Establish a connection to the database
+    connection = pymysql.connect(
+        unix_socket=f"/cloudsql/{connection_name}",
+        user=db_user,
+        password=db_password,
+        db=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    with connection.cursor() as cursor:
+        # Execute a SQL query
+        sql = "SELECT * FROM mytable"
+        cursor.execute(sql)
+    # Fetch the results
+    results = cursor.fetchall()
+    for row in results:
+        print(row)
+
 if __name__ == "__main__":
-    # google_submit(course1, assignment1, documentId, googleDocumentName)
+    # gh.createDirectory("course1")
+    # gh.setDirectory("course1")
+    # gh.createDoc("Assignment1")
+    # gh.showCurrentDirectory()
+    # gh.updateDoc("Assignment1")
+    # gh.export_pdf("Assignment1")
+    google_submit(course1, assignment1, gh.query("Assignment1"), "Assignment1.pdf")
     # local_submit(course1, assignment1, localDocumentName)
+    # connect_database()
     print("Done")
